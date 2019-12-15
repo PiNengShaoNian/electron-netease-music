@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux'
 
 import LayoutHeader from './LayoutHeader'
 import LayoutMenu from './LayoutMenu'
+import routes, {renderRoutes} from '../router'
+
+import './index.scss'
+
 
 export default memo(function Layout() {
   const isMenuShow = useSelector(({ music }) => music.isMenuShow)
@@ -15,6 +19,9 @@ export default memo(function Layout() {
             <LayoutMenu />
           </div>
         ) : null}
+        <div className="content">
+          {renderRoutes(routes)}
+        </div>
       </div>
     </div>
   )

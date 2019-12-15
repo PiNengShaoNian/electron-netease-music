@@ -20,6 +20,15 @@ export const clearCurrentSong = () => {
   }
 }
 
+export const setPlaylist = payload => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_PLAYLIST,
+      payload
+    })
+  }
+}
+
 export const startSong = rawSong => {
   return async (dispatch, getState) => {
     const song = Object.assign({}, rawSong)
@@ -57,7 +66,7 @@ export const startSong = rawSong => {
 export const addToPlaylist = song => {
   return (dispatch, getState) => {
     const { playlist } = getState()
-    const copy = playlist.slice()
+    let copy = playlist.slice()
     if (!copy.find(({ id }) => id === song.id)) {
       copy = copy.unshift(song)
       dispatch({ type: actionTypes.SET_PLAYLIST, payload: copy })

@@ -5,7 +5,7 @@ import {toRem} from '../../utils/rem'
 
 import './index.scss'
 
-const Icon = memo(function Icon({ size, type, color, backdrop, onClick }) {
+const Icon = memo(function Icon({ size, type, color, backdrop, onClick, className }) {
   const getIconCls = useCallback(() => {
     let cls = `icon-${type}`
     if (color) {
@@ -34,7 +34,7 @@ const Icon = memo(function Icon({ size, type, color, backdrop, onClick }) {
   const Icon = (
     <i
       onClick={handleClick}
-      className={`iconfont icon-component ${getIconCls()}`}
+      className={`iconfont icon-component ${getIconCls()} ${className}`}
       style={getIconStyle()}
     />
   )

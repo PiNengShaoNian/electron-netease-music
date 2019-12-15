@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect } from 'react'
 import { Popover } from 'element-react'
 import storage from 'good-storage'
 
@@ -42,7 +42,6 @@ const themeMap = {
 }
 
 export default memo(function Theme() {
-  const [visible, setVisible] = useState(false)
   const changeTheme = useCallback(themeKey => {
     storage.set(THEME_KEY, themeKey)
     const theme = themeMap[themeKey].file

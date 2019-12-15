@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import storage from 'good-storage'
 import { useHistory } from 'react-router-dom'
 
-import Toggle from '../../base/Toggle'
+// import Toggle from '../../base/Toggle'
 import NButton from '../../base/NButton'
 import Icon from '../../base/Icon'
 import HighlightText from '../../base/HighlightText'
@@ -85,10 +85,12 @@ export default memo(function() {
         renderName(song) {
           return `${song.name} - ${genArtistsText(song.artists)}`
         },
-        onClick() {}
+        onClick() {
+          onClickSong()
+        }
       }
     ]
-  }, [suggest])
+  }, [suggest, onClickSong])
 
   const onKeywordChange = useCallback(
     debounce(value => {

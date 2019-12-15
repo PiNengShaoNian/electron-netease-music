@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Loading } from 'element-react'
+// import { Loading } from 'element-react'
 import Confirm from '../base/Confirm'
 
 const BASE_URL = 'http://localhost:10086'

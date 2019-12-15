@@ -56,7 +56,7 @@ export default memo(function User() {
         onCloseModal()
       }
     },
-    [uid]
+    [uid, dispatch, onCloseModal]
   )
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default memo(function User() {
     if (isDef(uid)) {
       onLogin(uid + '')
     }
-  }, [])
+  }, [onLogin])
 
   return (
     <div className="user">
@@ -100,7 +100,11 @@ export default memo(function User() {
             <div className="login-help">
               <p className="help">
                 1、请
-                <a href="http://music.163.com" target="_blank">
+                <a
+                  href="http://music.163.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   点我(http://music.163.com)
                 </a>
                 打开网易云音乐官网

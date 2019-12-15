@@ -8,13 +8,13 @@ import 'element-theme-default'
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Provider store={store}>
         <Router>
           <Layout />
         </Router>
       </Provider>
-    </div>
+    </>
   )
 }
 
