@@ -34,7 +34,7 @@ export default memo(function LayoutMenu() {
                 <CustomLink
                   key={index}
                   to={item.path}
-                  active-class="menu-item-active"
+                  activeClass="menu-item-active"
                   className="menu-item"
                   tag="li"
                 >

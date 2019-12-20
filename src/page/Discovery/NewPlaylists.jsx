@@ -18,7 +18,7 @@ export default memo(function NewPlaylists() {
       const { result } = await getPersonalized({ limit: 10 })
       setList(result)
     })()
-  })
+  }, [])
 
   return list.length ? (
     <div className="recommend">

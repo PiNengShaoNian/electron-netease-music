@@ -29,6 +29,24 @@ export const setPlaylist = payload => {
   }
 }
 
+export const setPlayingState = payload => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_PLAYING_STATE,
+      payload
+    })
+  }
+}
+
+export const setCurrentTime = payload => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_CURRENT_TIME,
+      payload
+    })
+  }
+}
+
 export const startSong = rawSong => {
   return async (dispatch, getState) => {
     const song = Object.assign({}, rawSong)
@@ -46,7 +64,9 @@ export const startSong = rawSong => {
       payload: true
     })
 
-    const { playHistory } = getState()
+    const {
+      music: { playHistory }
+    } = getState()
     const playHistoryCopy = playHistory.slice()
     const findedIndex = playHistoryCopy.findIndex(({ id }) => song.id === id)
     if (findedIndex !== -1) {
@@ -71,6 +91,24 @@ export const addToPlaylist = song => {
       copy = copy.unshift(song)
       dispatch({ type: actionTypes.SET_PLAYLIST, payload: copy })
     }
+  }
+}
+
+export const setPlaylistShow = payload => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_PLAYLIST_SHOW,
+      payload
+    })
+  }
+}
+
+export const setPlayMode = payload => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_PLAY_MODE,
+      payload
+    })
   }
 }
 

@@ -2,6 +2,10 @@
 @import './mixin.scss';
 
 // table
+.el-table {
+  border: none !important;
+  color: #606266 !important;
+}
 .el-table th,
 .el-table td {
   padding: 4px !important;
@@ -123,6 +127,7 @@ $input-height: 24px;
 .el-pager li {
   background: inherit !important;
   color: var(--font-color) !important;
+  border: none !important;
 
   .active {
     color: $theme-color !important;

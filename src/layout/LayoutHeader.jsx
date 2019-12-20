@@ -18,7 +18,7 @@ export default memo(function LayoutHeader() {
 
   const onClickDown = useCallback(() => {}, [])
   return (
-    <div className="header">
+    <div className="layout-header">
       <div className="left">
         <div className="buttons">
           <div onClick={onClickLogo} className="mac-button red">

@@ -1,8 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const isDev = require('electron-is-dev')
 const path = require('path')
-const request = require('request')
-const axios = require('axios')
 
 const neteaseApi = require('./NeteaseCloudMusicApi/app')
 const { port } = require('./app-config')

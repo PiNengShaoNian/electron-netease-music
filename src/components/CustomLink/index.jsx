@@ -1,5 +1,5 @@
-import React, { memo } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import React, { memo, useCallback } from 'react'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 export default memo(function CustomLink({
   exact,
@@ -7,18 +7,31 @@ export default memo(function CustomLink({
   activeClass,
   to,
   children,
+  replace,
   ...other
 }) {
+  const history = useHistory()
   const match = useRouteMatch({
-    to
+    path: to
   })
 
   if (!other.tag) {
     other.tag = 'a'
   }
 
+  const handleLinkClick = useCallback(() => {
+    if (replace) {
+      history.replace(to)
+    } else {
+      history.push(to)
+    }
+  }, [to, replace, history])
+
   return (
-    <other.tag className={`${className} ${match ? activeClass : ''}`}>
+    <other.tag
+      onClick={handleLinkClick}
+      className={`${className} ${match ? activeClass : ''}`}
+    >
       {children}
     </other.tag>
   )

@@ -17,15 +17,6 @@ export default memo(function MvCard({
 }) {
   const history = useHistory()
 
-  console.log({
-    id,
-    img,
-    duration,
-    playCount,
-    name,
-    author
-  })
-
   const goMv = useCallback(() => {
     if (isDef(id)) {
       history.push(`/mv/${id}`)
@@ -46,11 +37,11 @@ export default memo(function MvCard({
           <PlayIcon size={48} className="play-icon" />
         </div>
         {duration ? (
-          <div className="duration-wrap">{formatTime(duration)}</div>
+          <div className="duration-wrap">{formatTime(duration / 1000)}</div>
         ) : null}
-        {name ? <p className="name">{name}</p> : null}
-        {author ? <p className="author">{author}</p> : null}
       </div>
+      {name ? <p className="name">{name}</p> : null}
+      {author ? <p className="author">{author}</p> : null}
     </div>
   )
 })

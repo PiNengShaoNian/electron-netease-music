@@ -17,7 +17,7 @@ import * as actions from '../../action/music'
 import './index.scss'
 const SEARCH_HISTORY_KEY = '__search_history__'
 
-export default memo(function() {
+export default memo(function Search() {
   const [searchPanelShow, setSearchPanelShow] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [suggest, setSuggest] = useState({})
@@ -110,16 +110,28 @@ export default memo(function() {
         return nextHistorys
       })
 
-      history.push(`/search/${keywords}`)
+      history.push(`/search/${keywords}/songs`)
       setSearchPanelShow(false)
     },
     [history]
   )
 
-  const onClickHot = useCallback(hot => {
-    const { first } = hot
-    goSearch(first)
-  }, [goSearch])
+  const onClickHot = useCallback(
+    hot => {
+      const { first } = hot
+      goSearch(first)
+    },
+    [goSearch]
+  )
+
+  const onKeyDown = useCallback(
+    ({ keyCode }) => {
+      if (keyCode !== 13) return
+
+      goSearch(searchKeyword)
+    },
+    [searchKeyword, goSearch]
+  )
 
   useEffect(() => {
     onKeywordChange(searchKeyword)
@@ -141,6 +153,7 @@ export default memo(function() {
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         placeholder="搜索"
       />
       {/* <Toggle /> */}
@@ -155,7 +168,7 @@ export default memo(function() {
                     {normalizedSuggest.title}
                   </div>
                   <ul className="list">
-                    {normalizedSuggest.map(item => (
+                    {normalizedSuggest.data.map(item => (
                       <li
                         className="item"
                         key={item.id}

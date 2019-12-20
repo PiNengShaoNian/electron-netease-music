@@ -28,10 +28,13 @@ export default memo(function NewSongs() {
   const dispatch = useDispatch()
 
   const bindedActions = useMemo(() => {
-    return bindActionCreators({
-      startSong,
-      setPlaylist
-    }, dispatch)
+    return bindActionCreators(
+      {
+        startSong,
+        setPlaylist
+      },
+      dispatch
+    )
   }, [dispatch])
 
   const thunkedList = useMemo(() => {
@@ -67,19 +70,22 @@ export default memo(function NewSongs() {
     return listIndex * chunkLimit + index + 1
   }, [])
 
-  const onClickSong = useCallback((listIndex, index) => {
-    const normalizedSongIndex = getSongOrder(listIndex, index)
-    const normalizedSong = normalizedSongs[normalizedSongIndex]
-    bindedActions.startSong(normalizedSong)
-    bindedActions.setPlaylist(normalizedSongs)
-  }, [bindedActions, getSongOrder, normalizedSongs])
+  const onClickSong = useCallback(
+    (listIndex, index) => {
+      const normalizedSongIndex = getSongOrder(listIndex, index)
+      const normalizedSong = normalizedSongs[normalizedSongIndex]
+      bindedActions.startSong(normalizedSong)
+      bindedActions.setPlaylist(normalizedSongs)
+    },
+    [bindedActions, getSongOrder, normalizedSongs]
+  )
 
   useEffect(() => {
     ;(async () => {
       const { result } = await getNewSongs()
       setList(result)
     })()
-  })
+  }, [])
   return list.length ? (
     <div className="new-songs" style={styles.newSongs}>
       <Title>最新音乐</Title>

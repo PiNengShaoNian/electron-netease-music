@@ -1,6 +1,6 @@
-import {isDef} from './common'
-import {getAlbum} from '../api/album'
-
+import { isDef, notify } from './common'
+import { getAlbum } from '../api/album'
+import { getMvDetail } from '../api/mv'
 
 export const genArtistsText = artists => {
   return (artists || []).map(({ name }) => name).join('/')
@@ -50,4 +50,17 @@ export async function getSongImg(id, albumId) {
 
 function genSongPlayUrl(id) {
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+}
+
+export async function goMvWithCheck(id, history) {
+  try {
+    await getMvDetail(id)
+    goMv(id, history)
+  } catch (error) {
+    notify('mv获取失败')
+  }
+}
+
+export function goMv(id, history) {
+  history.push(`/mv/${id}`)
 }

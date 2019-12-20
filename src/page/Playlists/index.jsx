@@ -1,9 +1,14 @@
-import React, { memo, useRef, currentPage, useCallback, useState } from 'react'
+import React, { memo, useRef, useCallback, useState, useEffect } from 'react'
 
 import TopPlaylistCard from '../../components/TopPlaylistCard'
+import Tabs from '../../base/Tabs'
+import Pagination from '../../base/Pagination'
 import { getPlaylists, getTopPlaylists } from '../../api/playlist'
-import { getPageOffset } from '../../utils/common'
+import { getPageOffset, formatNumber } from '../../utils/common'
 import { scrollInto } from '../../utils/dom'
+import PlaylistCard from '../../components/PlaylistCard'
+
+import './index.scss'
 
 const PAGE_SIZE = 50
 const tabs = [
@@ -27,11 +32,11 @@ export default memo(function Playlists() {
   const playlistsRef = useRef()
   const [currentPage, setCurrentPage] = useState(0)
   const [total, setTotal] = useState(0)
-  const { topPlaylist, setTopPlaylist } = useState({})
+  const [topPlaylist, setTopPlaylist] = useState({})
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [playlists, setPlaylists] = useState([])
 
-  const getPlaylists = useCallback(async () => {
+  const _getPlaylists = useCallback(async () => {
     const { playlists, total } = await getPlaylists({
       limit: PAGE_SIZE,
       offset: getPageOffset(currentPage, PAGE_SIZE),
@@ -39,20 +44,39 @@ export default memo(function Playlists() {
     })
     setPlaylists(playlists)
     setTotal(total)
-  }, [])
+  }, [activeTabIndex, currentPage])
 
-  const getTopPlaylists = useCallback(async () => {
+  const _getTopPlaylists = useCallback(async () => {
     const { playlists } = await getTopPlaylists({
       limit: 1,
       cat: tabs[activeTabIndex]
     })
     setTopPlaylist(playlists[0] || {})
-  })
+  }, [activeTabIndex])
 
   const initData = useCallback(() => {
-    getPlaylists()
-    getTopPlaylists()
-  }, [getPlaylists])
+    _getPlaylists()
+    _getTopPlaylists()
+  }, [_getTopPlaylists, _getPlaylists])
+
+  const onTabChange = useCallback(
+    index => {
+      setActiveTabIndex(index)
+      initData()
+    },
+    [initData]
+  )
+
+  const onPageChange = useCallback(page => {
+    setCurrentPage(page)
+    _getPlaylists()
+    scrollInto(playlistsRef.current)
+  }, [_getPlaylists])
+
+  useEffect(() => {
+    _getPlaylists()
+    _getTopPlaylists()
+  }, [_getPlaylists, _getTopPlaylists])
 
   return (
     <div className="playlists" ref={playlistsRef}>
@@ -66,6 +90,33 @@ export default memo(function Playlists() {
           />
         </div>
       ) : null}
+      <div className="tabs">
+        <Tabs
+          tabs={tabs}
+          active={activeTabIndex}
+          onActiveTabChange={onTabChange}
+          align="right"
+          type="small"
+        />
+      </div>
+      <div className="playlist-cards">
+        {playlists.map(item => (
+          <PlaylistCard
+            desc={`播放量: ${formatNumber(item.playCount)}`}
+            id={item.id}
+            key={item.id}
+            name={item.name}
+            img={item.coverImgUrl}
+          />
+        ))}
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        pageSize={PAGE_SIZE}
+        total={total}
+        onPageChange={onPageChange}
+        className="pagination"
+      />
     </div>
   )
 })

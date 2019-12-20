@@ -2,11 +2,12 @@
 @import '../style/mixin.scss';
 @import "../style/element-overwrite.scss";
 
-.header {
+.layout-header {
   display         : flex;
   justify-content : space-between;
   height          : $header-height;
   background-color: var(--header-bgcolor);
+  padding         : 0 !important;
   padding-right   : 36px;
 
   @include el-input-theme(var(--header-input-color),

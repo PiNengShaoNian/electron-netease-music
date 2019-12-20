@@ -1,6 +1,6 @@
 import actionTypes from '../action/actionTypes'
 import storage from 'good-storage'
-import { PLAY_HISTORY_KEY } from '../utils/config'
+import { PLAY_HISTORY_KEY, playModeMap } from '../utils/config'
 
 const initState = {
   isPlayerShow: false,
@@ -8,7 +8,10 @@ const initState = {
   playing: false,
   playHistory: storage.get(PLAY_HISTORY_KEY, []),
   playlist: [],
-  isMenuShow: true
+  isMenuShow: true,
+  playMode: playModeMap.sequence.code,
+  isPlaylistPromptShow: false,
+  currentTime: 0
 }
 
 export default (state = initState, action) => {
@@ -39,6 +42,16 @@ export default (state = initState, action) => {
       return {
         ...state,
         playlist: payload
+      }
+    case actionTypes.SET_PLAY_MODE:
+      return {
+        ...state,
+        playMode: payload
+      }
+    case actionTypes.SET_CURRENT_TIME:
+      return {
+        ...state,
+        currentTime: payload
       }
     default:
   }
