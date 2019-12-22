@@ -50,7 +50,6 @@ export default function watchProps(WrappedComponent) {
     }
 
     componentDidUpdate(prevProps) {
-      console.log(prevProps)
       const params = this.state.__watchState
       const watchObject = this.state.__watchObject
       if (!watchObject || !params) return

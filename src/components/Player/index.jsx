@@ -49,7 +49,7 @@ export default memo(function Player() {
   const disc = useRef()
   const discRotate = useRef()
   const scrollerRef = useRef()
-  const lyricRef = useRef()
+  const lyricRef = useRef([])
   const commentsRef = useRef()
   const lyricTimer = useRef({
     [WHEEL_TYPE]: null,
@@ -115,6 +115,10 @@ export default memo(function Player() {
 
   const oldIndex = usePrevious(activeLyricIndex)
 
+  const setLyricRef = useCallback(lyric => {
+    lyricRef.current.push(lyric)
+  }, [])
+
   const onGoMv = useCallback(() => {
     bindedActions.setPlayerShow(false)
     goMvWithCheck(currentSong.id, history)
@@ -139,7 +143,8 @@ export default memo(function Player() {
     ]).finally(() => {
       setSimiLoading(false)
     })
-    setSimiPlaylists(simiPlaylists)
+
+    setSimiPlaylists(simiPlaylists.playlists)
     setSimiSongs(
       simiSongs.songs.map(song => {
         const {
@@ -165,7 +170,7 @@ export default memo(function Player() {
   const updateSong = useCallback(() => {
     updateLyric()
     updateSimi()
-  }, [updateLyric])
+  }, [updateLyric, updateSimi])
 
   const clearTimer = useCallback(type => {
     lyricTimer.current[type] && window.clearTimeout(lyricTimer.current[type])
@@ -203,11 +208,16 @@ export default memo(function Player() {
 
   const scrollToActiveLyric = useCallback(() => {
     if (activeLyricIndex !== -1) {
-      if (lyric.current && lyric.current[activeLyricIndex]) {
-        scrollerRef.current
-          .getInstance()
-          .getScroller()
-          .scrollToElement(lyricRef.current[activeLyricIndex], 200, 0, true)
+      if (lyricRef.current && lyricRef.current[activeLyricIndex]) {
+        const scroller = scrollerRef.current.getInstance().getScroller()
+
+        scroller &&
+          scroller.scrollToElement(
+            lyricRef.current[activeLyricIndex],
+            200,
+            0,
+            true
+          )
       }
     }
   }, [activeLyricIndex, lyric])
@@ -223,10 +233,18 @@ export default memo(function Player() {
     [id, bindedActions, history]
   )
 
-  const onClickSong = useCallback((song) => {
-    bindedActions.startSong(song)
-    bindedActions.addToPlaylist(song)
-  }, [bindedActions])
+  const onClickSong = useCallback(
+    song => {
+      bindedActions.startSong(song)
+      bindedActions.addToPlaylist(song)
+    },
+    [bindedActions]
+  )
+
+  console.log({
+    currentSong,
+    oldSong
+  })
 
   useEffect(() => {
     if (!currentSong.id) {
@@ -239,6 +257,7 @@ export default memo(function Player() {
     }
 
     if (isPlayerShow) {
+      debugger
       updateSong()
     } else {
       updateLyric()
@@ -313,7 +332,7 @@ export default memo(function Player() {
                       <div
                         className={`${getActiveCls(index)} lyric-item`}
                         key={index}
-                        ref={lyricRef}
+                        ref={setLyricRef}
                       >
                         {l.contents.map((content, contentIndex) => (
                           <p className="lyric-text" key={contentIndex}>
@@ -329,9 +348,7 @@ export default memo(function Player() {
           </div>
           <div className="bottom">
             <div className="left">
-              {currentSong.id ? (
-                <Comments id={currentSong.id} ref={commentsRef} />
-              ) : null}
+              {currentSong.id ? <Comments id={currentSong.id} /> : null}
             </div>
             {simiPlaylists.concat(simiSongs).length ? (
               <div className="right">

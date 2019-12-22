@@ -77,7 +77,10 @@ export default memo(function PlaylistDetail() {
     )
   }, [songs, searchValue])
 
+  console.log('render')
+
   useEffect(() => {
+    console.log('sdf')
     setSearchValue('')
     init()
   }, [id, init])

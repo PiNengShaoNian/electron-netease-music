@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react'
+import PropTypes from 'prop-types'
 
 import Empty from '../../base/Empty'
 import Loading from '../../base/Loading'
@@ -27,7 +28,7 @@ const PLAYLIST_TYPE = 'playlist'
 const MV_TYPE = 'mv'
 const PAGE_SIZE = 20
 
-export default memo(function Comments({ type, id, onUpdate }) {
+const Comments = memo(function Comments({ type, id, onUpdate }) {
   const [hotComments, setHotComments] = useState([])
   const [comments, setComments] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -74,7 +75,7 @@ export default memo(function Comments({ type, id, onUpdate }) {
 
     setComments(comments)
     setTotal(total)
-    onUpdate && onUpdate({comments, hotComments, total})
+    onUpdate && onUpdate({ comments, hotComments, total })
   }, [type, id, currentPage, onUpdate])
 
   const onPageChange = useCallback(
@@ -131,7 +132,7 @@ export default memo(function Comments({ type, id, onUpdate }) {
               ))}
             </div>
           ) : null}
-          
+
           <Pagination
             currentPage={currentPage}
             pageSize={PAGE_SIZE}
@@ -146,3 +147,14 @@ export default memo(function Comments({ type, id, onUpdate }) {
     </div>
   )
 })
+
+Comments.propTypes = {
+  id: PropTypes.number.isRequired,
+  type: PropTypes.string
+}
+
+Comments.defaultProps = {
+  type: SONG_TYPE
+}
+
+export default Comments
