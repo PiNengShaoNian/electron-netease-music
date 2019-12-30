@@ -1,0 +1,14 @@
+.confirm-dialog {
+  /deep/.el-dialog__body {
+    padding-top   : 20px;
+    padding-bottom: 20px;
+  }
+
+  .confirm-body {
+    line-height: 20px;
+  }
+
+  .confirm-btn {
+    width: 100%;
+  }
+}
