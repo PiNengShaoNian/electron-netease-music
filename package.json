@@ -91,7 +91,7 @@
     "element-theme-default": "^1.4.13",
     "good-storage": "^1.1.0",
     "lodash-es": "^4.17.15",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-devtools-electron": "^4.2.1",
