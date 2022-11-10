@@ -84,7 +84,7 @@
     "classnames": "^2.2.6",
     "concurrently": "^5.0.1",
     "cross-env": "^6.0.3",
-    "electron": "^7.1.4",
+    "electron": "^18.3.7",
     "electron-builder": "^21.2.0",
     "electron-is-dev": "^1.1.0",
     "element-react": "^1.4.34",
